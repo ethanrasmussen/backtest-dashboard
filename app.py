@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.graph_objs as go
 from datetime import datetime
 from strategy import EMACrossover, RSIMeanReversion, BBandsBreakout, MACDCrossover, run_backtest
-from util import convert_tz, handle_strategy_menu
+from util import convert_tz, handle_strategy_menu, apply_theme
 
 
 STRATEGIES = {
@@ -17,6 +17,7 @@ STRATEGIES = {
 # Setup:
 st.set_page_config(page_title='Backtesting Dashboard', layout='wide')
 st.title("Backtesting Dashboard")
+apply_theme()
 
 
 # Sidebar controls:
@@ -29,7 +30,6 @@ with st.sidebar:
     st.header("Strategy Selection")
     selected_strat = st.selectbox("Select a Strategy", options=STRATEGIES.keys())
     strat_data = handle_strategy_menu(selected_strat)
-    st.write(strat_data)
 
     st.header("Backtest Controls")
     init_equity = st.number_input("Initial Equity Position", value=25000)

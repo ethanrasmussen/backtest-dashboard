@@ -45,3 +45,80 @@ def handle_strategy_menu(selected_strat:str):
             st.error("Invalid strategy selected.")
 
     return strategy_dict
+
+def apply_theme():
+    # From Spotify theming: https://github.com/jrieke/advanced-theming-spotify/tree/main
+    titleFontSize = "39.5px"
+    titleFontWeight = "900"
+    headerFontSize = "32px"
+    headerFontWeight = "700"
+    subheaderFontSize = "24px"
+    subheaderFontWeight = "700"
+    buttonBorderRadius = "1.6rem"
+    secondaryButtonHoverBorderColor = "#ffffff" 
+    secondaryButtonHoverTextColor = "inherit"
+    primaryButtonHoverBorderColor = "#1ED760"
+    pillsBackgroundColor = "#2a2a2a"
+    pillsBorderColor = "none"
+    pillsHoverBackgroundColor = "#333333"
+    pillsHoverTextColor = "inherit"
+    activePillBackgroundColor = "#ffffff"
+    activePillTextColor = "#000000"
+    activePillBorderColor = "none"
+    activePillHoverBackgroundColor = "#ffffff"
+    activePillHoverTextColor = "#000000"
+    st.html(
+        f"""
+        <style>
+        h1 {{
+            font-size: {titleFontSize} !important;
+            font-weight: {titleFontWeight} !important;
+        }}
+        
+        h2 {{
+            font-size: {headerFontSize} !important;
+            font-weight: {headerFontWeight} !important;
+        }}
+        
+        h3 {{
+            font-size: {subheaderFontSize} !important;
+            font-weight: {subheaderFontWeight} !important;
+        }}
+        
+        .stButton button, .stDownloadButton button, .stLinkButton a, .stFormSubmitButton button {{
+            border-radius: {buttonBorderRadius} !important;
+        }}
+        
+        .stButton button[kind="secondary"]:hover, .stDownloadButton button[kind="secondary"]:hover, .stLinkButton a[kind="secondary"]:hover, .stFormSubmitButton button[kind="secondary"]:hover {{
+            border-color: {secondaryButtonHoverBorderColor} !important;
+            color: {secondaryButtonHoverTextColor} !important;
+        }}
+        
+        .stButton button[kind="primary"]:hover, .stDownloadButton button[kind="primary"]:hover, .stLinkButton a[kind="primary"]:hover, .stFormSubmitButton button[kind="primary"]:hover {{
+            border-color: {primaryButtonHoverBorderColor} !important;
+        }}
+        
+        [data-testid="stBaseButton-pills"] {{
+            background-color: {pillsBackgroundColor} !important;
+            border: {pillsBorderColor} !important;
+        }}
+        
+        [data-testid="stBaseButton-pills"]:hover {{
+            background-color: {pillsHoverBackgroundColor} !important;
+            color: {pillsHoverTextColor} !important;
+        }}
+        
+        [data-testid="stBaseButton-pillsActive"] {{
+            background-color: {activePillBackgroundColor} !important;
+            color: {activePillTextColor} !important;
+            border: {activePillBorderColor} !important;
+        }}
+        
+        [data-testid="stBaseButton-pillsActive"]:hover {{
+            background-color: {activePillHoverBackgroundColor} !important;
+            color: {activePillHoverTextColor} !important;
+        }}
+    
+        </style>
+        """
+    )
