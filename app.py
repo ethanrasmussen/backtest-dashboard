@@ -5,12 +5,22 @@ import numpy as np
 import plotly.graph_objs as go
 from datetime import datetime
 import pytz
-from strategy import run_backtest
+from strategy import Testing, EMACrossover, RSIMeanReversion, BBandsBreakout, MACDCrossover, Momentum, run_backtest
+from util import convert_tz, handle_strategy_menu
 
+
+STRATEGIES = {
+    "EMA Crossover": EMACrossover,
+    "RSI Mean Reversion": RSIMeanReversion,
+    "Bollinger Bands Breakout": BBandsBreakout,
+    "MACD Crossover": MACDCrossover,
+    # "Momentum": Momentum
+}
 
 # Setup:
 st.set_page_config(page_title='Backtesting Dashboard', layout='wide')
 st.title("Backtesting Dashboard")
+
 
 # Sidebar controls:
 with st.sidebar:
@@ -20,7 +30,9 @@ with st.sidebar:
     end_date = st.date_input("End Date", value=pd.to_datetime(datetime.today()))
 
     st.header("Strategy Selection")
-    st.write("...")
+    selected_strat = st.selectbox("Select a Strategy", options=STRATEGIES.keys())
+    strat_data = handle_strategy_menu(selected_strat)
+    st.write(strat_data)
 
     st.header("Backtest Controls")
     init_equity = st.number_input("Initial Equity Position", value=25000)
@@ -31,15 +43,26 @@ with st.sidebar:
 
     bt_ran = st.button("Run Backtest")
 
+
 # Main page:
 if not bt_ran:
     st.warning("This page will populate once you run a backtest! Use the sidebar on the left to input your settings.")
 if bt_ran:
     with st.spinner(f"Running backtest for {ticker}..."):
+        data = vbt.YFData.download(ticker, start=convert_tz(start_date), end=convert_tz(end_date)).get('Close')
+        # strat = Testing(
+        #     strategy_data = {},
+        #     price_data = data
+        # )
+        strat = STRATEGIES[selected_strat](
+            strategy_data = strat_data,
+            price_data = data
+        )
         pf = run_backtest(
-            ticker = ticker,
-            start_date = start_date,
-            end_date = end_date,
+            strategy = strat,
+            # ticker = ticker,
+            # start_date = start_date,
+            # end_date = end_date,
             size = size,
             size_type = size_type,
             init_equity = init_equity,
@@ -57,6 +80,7 @@ if bt_ran:
 
     statdf = pd.DataFrame(pf.stats(), columns=['Value'])
     statdf.index.name = 'Stat/Measure:'
+    # st.write(statdf)
     
     with summary:
         st.markdown("#### Backtest & Portfolio Summary:")
