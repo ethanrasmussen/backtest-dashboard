@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import datetime
 import pytz
 
+
 # Date to datetime with timezone
 def convert_tz(date):
     return datetime.combine(date, datetime.min.time()).replace(tzinfo=pytz.UTC)
